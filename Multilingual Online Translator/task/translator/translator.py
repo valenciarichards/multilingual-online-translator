@@ -48,18 +48,45 @@ def strip_formatting(original_list: list) -> list:
     return stripped_list
 
 
+def show_menu():
+    print("""Hello, you're welcome to the translator. Translator supports: 
+1. Arabic
+2. German
+3. English
+4. Spanish
+5. French
+6. Hebrew
+7. Japanese
+8. Dutch
+9. Polish
+10. Portuguese
+11. Romanian
+12. Russian
+13. Turkish
+""")
+
+
 def main():
-    language = input('Type "en" if you want to translate from French into English, or "fr" if you want to '
-                     'translate from English into French:\n').lower()
-    text = input("Type the word you want to translate:\n").lower()
-    print(f'You chose "{language}" as the to_language to translate "{text}" to.')
-    if language == "en":
-        to_language = "english"
-        from_language = "french"
-    else:
-        to_language = "french"
-        from_language = "english"
-    get_translations(from_language, to_language, text)
+    languages = {
+        "1": "arabic",
+        "2": "german",
+        "3": "english",
+        "4": "spanish",
+        "5": "french",
+        "6": "hebrew",
+        "7": "japanese",
+        "8": "dutch",
+        "9": "polish",
+        "10": "portuguese",
+        "11": "romanian",
+        "12": "russian",
+        "13": "turkish",
+    }
+    show_menu()
+    from_language = input('Type the number of your language:\n').lower().strip()
+    to_language = input("Type the number of language you want to translate to:\n").lower().strip()
+    word = input("Type the word you want to translate:\n").lower().strip()
+    get_translations(languages[from_language], languages[to_language], word)
 
 
 if __name__ == "__main__":
