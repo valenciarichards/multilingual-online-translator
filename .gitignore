@@ -1,0 +1,4 @@
+# Ignore everything except translator.py and requirements.txt
+*
+!*/*/*/translator.py
+!requirements.txt
