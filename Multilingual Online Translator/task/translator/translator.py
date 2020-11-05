@@ -50,14 +50,26 @@ def get_translations(original_language, translated_language, text):
         return translations, paired_sentences
 
 
-def get_all_translations(original_language, text):
-    """Translate the text into all available languages and print the first translation and example sentence."""
+def print_all_translations(original_language, text):
+    """Print translations in all languages and save to a file.
 
+    Accept an original language and a string of text as parameters, translate the text into all available languages,
+    print the first translation and example sentence, and save it to a .txt file named after the text being translated.
+    """
+
+    # Create a .txt file
+    file = open(f"{text}.txt", "w", encoding="utf-8")
+
+    # Translate the text into each language, print the first result and save to the file.
     for language in languages.values():
         if language != original_language:
             translations, paired_sentences = get_translations(original_language, language, text)
             print(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n")
+            file.write(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n\n")
             print(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n")
+            file.write(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n\n")
+
+    file.close()
 
 
 def strip_formatting(original_list: list) -> list:
@@ -86,7 +98,7 @@ def main():
                            "or '0' to translate to all languages:\n").lower().strip()
     word = input("Type the word you want to translate:\n").lower().strip()
     if to_language_id == "0":
-        get_all_translations(languages[from_language_id], word)
+        print_all_translations(languages[from_language_id], word)
     elif to_language_id in languages:
         translations, paired_sentences = get_translations(languages[from_language_id], languages[to_language_id], word)
         # Print the first 5 translations.
