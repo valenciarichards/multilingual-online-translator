@@ -1,24 +1,25 @@
 # Multilingual Online Translator.
 
-# Import the requests and BeautifulSoup modules.
+# Import the requests, sys and BeautifulSoup modules.
 import requests
+import sys
 from bs4 import BeautifulSoup
 
-languages = {
-        "1": "arabic",
-        "2": "german",
-        "3": "english",
-        "4": "spanish",
-        "5": "french",
-        "6": "hebrew",
-        "7": "japanese",
-        "8": "dutch",
-        "9": "polish",
-        "10": "portuguese",
-        "11": "romanian",
-        "12": "russian",
-        "13": "turkish",
-    }
+languages = [
+    "arabic",
+    "german",
+    "english",
+    "spanish",
+    "french",
+    "hebrew",
+    "japanese",
+    "dutch",
+    "polish",
+    "portuguese",
+    "romanian",
+    "russian",
+    "turkish",
+    ]
 
 
 def get_translations(original_language, translated_language, text):
@@ -32,7 +33,6 @@ def get_translations(original_language, translated_language, text):
     # If no "User-Agent" is defined, the server responds with a 403 error.
     url = f"https://context.reverso.net/translation/{original_language}-{translated_language}/{text}"
     response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-    print(response.status_code)
 
     # Parse the HTML if the response status code starts with 2(request accepted) or 3(redirection).
     if response:
@@ -61,7 +61,7 @@ def print_all_translations(original_language, text):
     file = open(f"{text}.txt", "w", encoding="utf-8")
 
     # Translate the text into each language, print the first result and save to the file.
-    for language in languages.values():
+    for language in languages:
         if language != original_language:
             translations, paired_sentences = get_translations(original_language, language, text)
             print(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n")
@@ -83,29 +83,20 @@ def strip_formatting(original_list: list) -> list:
     return stripped_list
 
 
-def show_menu():
-    """Print all available languages to the screen."""
-
-    print("Hello, you're welcome to the translator. Translator supports:")
-    for number, language in languages.items():
-        print(f"{number}. {language.capitalize()}")
-
-
 def main():
-    show_menu()
-    from_language_id = input('Type the number of your language:\n').lower().strip()
-    to_language_id = input("Type the number of a language you want to translate to "
-                           "or '0' to translate to all languages:\n").lower().strip()
-    word = input("Type the word you want to translate:\n").lower().strip()
-    if to_language_id == "0":
-        print_all_translations(languages[from_language_id], word)
-    elif to_language_id in languages:
-        translations, paired_sentences = get_translations(languages[from_language_id], languages[to_language_id], word)
-        # Print the first 5 translations.
+    # Accept arguments from the command line and assign them to original_language, translated_language and text
+    args = sys.argv
+    original_language, translated_language, text = [arg.lower() for arg in args[1:]]
+
+    # If all languages are selected, print the first translation and example sentence and save the output to a file.
+    if translated_language == "all":
+        print_all_translations(original_language, text)
+    # Otherwise, print the first 5 translations and example sentences in the selected language.
+    elif translated_language in languages:
+        translations, paired_sentences = get_translations(original_language, translated_language, text)
         print("\nContext examples:\n")
-        print(f"{languages[to_language_id].capitalize()} Translations:\n" + "\n".join(translations[:5]))
-        # Print the first 5 paired example sentences.
-        print(f"\n{languages[to_language_id].capitalize()} Examples:")
+        print(f"{translated_language.capitalize()} Translations:\n" + "\n".join(translations[:5]))
+        print(f"\n{translated_language.capitalize()} Examples:")
         for original_language_sentence, translated_language_sentence in paired_sentences[:5]:
             print(f"{original_language_sentence}:\n{translated_language_sentence}\n")
 
