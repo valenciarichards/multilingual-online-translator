@@ -50,7 +50,7 @@ def get_translations(original_language, translated_language, text):
         return translations, paired_sentences
 
 
-def print_all_translations(original_language, text):
+def print_and_save_all_translations(original_language, text):
     """Print translations in all languages and save to a file.
 
     Accept an original language and a string of text as parameters, translate the text into all available languages,
@@ -90,7 +90,7 @@ def main():
 
     # If all languages are selected, print the first translation and example sentence and save the output to a file.
     if translated_language == "all":
-        print_all_translations(original_language, text)
+        print_and_save_all_translations(original_language, text)
     # Otherwise, print the first 5 translations and example sentences in the selected language.
     elif translated_language in languages:
         translations, paired_sentences = get_translations(original_language, translated_language, text)
