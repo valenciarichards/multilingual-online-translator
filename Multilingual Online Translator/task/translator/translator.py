@@ -26,19 +26,27 @@ def get_translations(original_language, translated_language, text):
     """Get translations and example sentences from "context.reverso.net".
 
     Accept an original language, translated language, and a text string as parameters, query the
-    "context.reverso.net" server using the "requests" module and return all translations and paired example sentences.
+    "context.reverso.net" server using the "requests" module and return all translations and paired
+    example sentences. Return None if there are no translations.
     """
 
     # Define the url and send the GET request to the server.
     # If no "User-Agent" is defined, the server responds with a 403 error.
     url = f"https://context.reverso.net/translation/{original_language}-{translated_language}/{text}"
-    response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    try:
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    except ConnectionError:
+        print("Something wrong with your internet connection")
+        sys.exit()
 
     # Parse the HTML if the response status code starts with 2(request accepted) or 3(redirection).
     if response:
         # Extract the translations.
         soup = BeautifulSoup(response.text, "html.parser")
         div_tag = soup.find_all("div", {"id": "translations-content"})[0]
+        # Return None if there are no translations.
+        if not div_tag:
+            return None
         a_tags = div_tag.find_all("a")
         translations = [a_tag.text.strip() for a_tag in a_tags]
         # Extract the paired example sentences.
@@ -50,11 +58,12 @@ def get_translations(original_language, translated_language, text):
         return translations, paired_sentences
 
 
-def print_and_save_all_translations(original_language, text):
+def print_and_save_all_translations(original_language, text) -> bool:
     """Print translations in all languages and save to a file.
 
     Accept an original language and a string of text as parameters, translate the text into all available languages,
     print the first translation and example sentence, and save it to a .txt file named after the text being translated.
+    Return False and print an error message if the get_translations function returns None. Return True if successful.
     """
 
     # Create a .txt file
@@ -63,13 +72,18 @@ def print_and_save_all_translations(original_language, text):
     # Translate the text into each language, print the first result and save to the file.
     for language in languages:
         if language != original_language:
-            translations, paired_sentences = get_translations(original_language, language, text)
+            # Return None and print an error message if the get_translation function returns None.
+            try:
+                translations, paired_sentences = get_translations(original_language, language, text)
+            except TypeError:
+                return False
             print(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n")
             file.write(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n\n")
             print(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n")
             file.write(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n\n")
 
     file.close()
+    return True
 
 
 def strip_formatting(original_list: list) -> list:
@@ -90,16 +104,26 @@ def main():
 
     # If all languages are selected, print the first translation and example sentence and save the output to a file.
     if translated_language == "all":
-        print_and_save_all_translations(original_language, text)
+        request_fulfilled = print_and_save_all_translations(original_language, text)
+        if not request_fulfilled:
+            print(f"Sorry, unable to find {text}")
+            sys.exit()
     # Otherwise, print the first 5 translations and example sentences in the selected language.
     elif translated_language in languages:
-        translations, paired_sentences = get_translations(original_language, translated_language, text)
+        try:
+            translations, paired_sentences = get_translations(original_language, translated_language, text)
+        except TypeError:
+            print(f"Sorry, unable to find {text}")
+            sys.exit()
         print("\nContext examples:\n")
         print(f"{translated_language.capitalize()} Translations:\n" + "\n".join(translations[:5]))
         print(f"\n{translated_language.capitalize()} Examples:")
         for original_language_sentence, translated_language_sentence in paired_sentences[:5]:
             print(f"{original_language_sentence}:\n{translated_language_sentence}\n")
+    else:
+        print(f"Sorry, the program doesn't support {translated_language}")
 
 
 if __name__ == "__main__":
     main()
+    sys.exit()
