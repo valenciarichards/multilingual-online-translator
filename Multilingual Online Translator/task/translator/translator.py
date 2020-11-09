@@ -78,8 +78,8 @@ def print_and_save_all_translations(original_language, text) -> bool:
             except TypeError:
                 return False
             try:
-                print(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n")
-                file.write(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n\n")
+                print(f"{language.capitalize()} Translation:\n{translations[0]}\n")
+                file.write(f"{language.capitalize()} Translation:\n{translations[0]}\n")
                 print(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n")
                 file.write(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n\n")
             except IndexError:
@@ -100,10 +100,26 @@ def strip_formatting(original_list: list) -> list:
     return stripped_list
 
 
+def show_available_languages():
+    print("Available languages:")
+    for language in languages:
+        print(f"- {language.capitalize()}")
+
+
 def main():
-    # Accept arguments from the command line and assign them to original_language, translated_language and text
+    # Accept arguments from the command line, check that the correct number of arguments are provided, and assign them
+    # to original_language, translated_language and text
     args = sys.argv
-    original_language, translated_language, text = [arg.lower() for arg in args[1:]]
+    if len(args) == 4:
+        original_language, translated_language, text = [arg.lower() for arg in args[1:]]
+    else:
+        if sys.platform.startswith("win32"):
+            print("Usage: python translator.py <your language> <language you want to translate to, or \"all\" for "
+                  "all languages> <word to translate>")
+        else:
+            print("Usage: python3 translator.py <your language> <language you want to translate to, or \"all\" for "
+                  "all languages> <word to translate>")
+        sys.exit()
 
     # If all languages are selected, print the first translation and example sentence and save the output to a file.
     if translated_language == "all":
@@ -124,7 +140,8 @@ def main():
         for original_language_sentence, translated_language_sentence in paired_sentences[:5]:
             print(f"{original_language_sentence}:\n{translated_language_sentence}\n")
     else:
-        print(f"Sorry, the program doesn't support {translated_language}")
+        print(f"Sorry, the program doesn't support {translated_language}.")
+        show_available_languages()
 
 
 if __name__ == "__main__":
