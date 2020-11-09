@@ -77,10 +77,13 @@ def print_and_save_all_translations(original_language, text) -> bool:
                 translations, paired_sentences = get_translations(original_language, language, text)
             except TypeError:
                 return False
-            print(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n")
-            file.write(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n\n")
-            print(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n")
-            file.write(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n\n")
+            try:
+                print(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n")
+                file.write(f"{language.capitalize()} Translations:\n{translations[0][0]}\n{translations[0][1]}\n\n")
+                print(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n")
+                file.write(f"{language.capitalize()} Example:\n{paired_sentences[0][0]}\n{paired_sentences[0][1]}\n\n")
+            except IndexError:
+                pass
 
     file.close()
     return True
