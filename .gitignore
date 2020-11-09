@@ -1,5 +1,7 @@
-# Ignore everything except translator.py, requirements.txt and .gitignore
+# Ignore everything except translator.py, requirements.txt, .gitignore and screenshots
 *
+!*/
 !/requirements.txt
 !/.gitignore
 !/Multilingual Online Translator/task/translator/translator.py
+!/screenshots/*
