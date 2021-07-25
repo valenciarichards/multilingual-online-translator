@@ -53,3 +53,6 @@ To translate "hi" into all available languages:
 
 ## License
 The source code is released under the MIT License.
+
+## Acknowledgements
+Translations obtained from [context.reverso.net/translation](https://context.reverso.net/translation/)
