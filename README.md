@@ -22,14 +22,23 @@ This program was built as a JetBrains Academy project.
 
 
 ## How to use
-Download the repository, navigate to the directory containing "translator.py" on the command line, and run
 
-on Mac or Linux:
+### Clone the repository
+```
+git clone git@github.com:valenciarichards/multilingual-online-translator.git
+```
+
+### Requirements
+This program uses the requests and Beautiful Soup modules. You can install all necessary modules by running
 
 ```
-  python3 translator.py <your language> <language you want to translate to, or "all" for all languages> <word to translate>
+pip install -r requirements.txt
 ```
-on Windows:
+
+### Usage
+
+Navigate to the directory containing "translator.py" on the command line, and run
+
 ```
   python translator.py <your language> <language you want to translate to, or "all" for all languages> <word to translate>
 ```
@@ -41,19 +50,6 @@ To translate "hi" from english to french:
 
 To translate "hi" into all available languages:
 ![hi translated to all available languages](https://github.com/v-richards/multilingual-online-translator/blob/master/screenshots/english%20all%20hi.png)
-
-## Requirements
-This program uses the requests and Beautiful Soup modules. You can install all necessary modules by running
-
-on Mac or Linux:
-
-```
-pip3 install -r requirements.txt
-```
-on Windows:
-```
-pip install -r requirements.txt
-```
 
 
 ## License
