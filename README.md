@@ -21,21 +21,20 @@ If "all" is selected, the program prints one translation and sentence from each 
 This program was built as a JetBrains Academy project.
 
 
-## How to use
+## Installation
 
-### Clone the repository
+Clone the repository
 ```
 git clone git@github.com:valenciarichards/multilingual-online-translator.git
 ```
 
-### Requirements
 This program uses the requests and Beautiful Soup modules. You can install all necessary modules by running
 
 ```
 pip install -r requirements.txt
 ```
 
-### Usage
+## Usage
 
 Navigate to the directory containing "translator.py" on the command line, and run
 
