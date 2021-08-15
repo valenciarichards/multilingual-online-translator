@@ -18,7 +18,7 @@ This app translates words into one or all of the following languages:
 If a specific language is selected, the program prints the first 5 translations of the word as well as 5 sentences including the word. 
 If "all" is selected, the program prints one translation and sentence from each of the other languages and saves the output to a file.
 
-This program was built as a JetBrains Academy project.
+This app was built as a JetBrains Academy project, and the repository also contains my code snippets from exercises from JetBrains Academy's Python Developer track in the 'Problems' directory.
 
 
 ## Installation
