@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-Navigate to the directory containing "translator.py" on the command line, and run
+Navigate to the directory containing "translator.py" ("Multilingual Online Translator"/task/translator/) on the command line, and run
 
 ```
   python translator.py <your language> <language you want to translate to, or "all" for all languages> <word to translate>
